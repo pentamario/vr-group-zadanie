@@ -1,4 +1,18 @@
-/* src/index.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#map {
+    z-index: 0 !important;
+}
+
+/* ✅ Fix for OpenLayers Icon Overwrite */
+.ol-control button {
+    z-index: 20 !important;
+    color: black !important;
+    font-size: 16px;
+    border: 1px solid gray;
+    background: white !important;
+}
+
