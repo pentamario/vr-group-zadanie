@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-const CoordinateInput = ({ numCoordinates, onSubmit }) => {
+const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [] }) => {
     const [coordinates, setCoordinates] = useState([]);
 
-    // ✅ Reset coordinates on change of numCoordinates
     useEffect(() => {
-        setCoordinates(
-            Array.from({ length: numCoordinates }, () => ({
-                latitude: '',
-                longitude: '',
-            }))
-        );
-    }, [numCoordinates]);
+        if (initialCoordinates.length > 0) {
+            setCoordinates(initialCoordinates);
+        } else {
+            setCoordinates(
+                Array.from({ length: numCoordinates }, () => ({
+                    latitude: '',
+                    longitude: '',
+                }))
+            );
+        }
+    }, [initialCoordinates, numCoordinates]);
 
     const handleInputChange = (index, field, value) => {
         const updatedCoordinates = [...coordinates];
@@ -22,18 +25,18 @@ const CoordinateInput = ({ numCoordinates, onSubmit }) => {
         setCoordinates(updatedCoordinates);
     };
 
+    // ✅ Submit button required to trigger map update
     const handleSubmit = () => {
         const parsedCoordinates = coordinates.map(coord => ({
             latitude: parseFloat(coord.latitude),
             longitude: parseFloat(coord.longitude),
         }));
 
-        // ✅ Send data back to MapComponent
-        onSubmit(parsedCoordinates);
+        onSubmit(parsedCoordinates);  // ✅ Only updates map when submitted
     };
 
     return (
-        <div className="absolute top-20 LEFT-10 bg-white p-4 rounded-lg shadow-lg z-50">
+        <div className="absolute top-20 left-10 bg-white p-4 rounded-lg shadow-lg z-50">
             <h2 className="text-lg font-bold mb-2">Enter Coordinates</h2>
             {coordinates.map((coord, index) => (
                 <div key={index} className="mb-2">
@@ -54,6 +57,7 @@ const CoordinateInput = ({ numCoordinates, onSubmit }) => {
                     />
                 </div>
             ))}
+            {/* ✅ Submit button added for triggering the polyline */}
             <button 
                 onClick={handleSubmit} 
                 className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"

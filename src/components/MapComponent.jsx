@@ -4,51 +4,73 @@ import useMapControls from '../hooks/useMapControls';
 import useDraw from '../hooks/useDraw';
 import ZoomButtons from './ZoomButtons';
 import CoordinateInput from './CoordinateInput'; 
-import useInputCoordinates from '../hooks/useInputCoordinates';  // ✅ New Import
+import useInputCoordinates from '../hooks/useInputCoordinates';  
 
 const MapComponent = () => {
     const { mapRef, handleZoomIn, handleZoomOut, mapReady } = useMapControls();
-    const { startDrawing } = useDraw(mapRef);
-    const { drawCoordinates } = useInputCoordinates(mapRef); // ✅ Hook Used Here
     const [numCoordinates, setNumCoordinates] = useState(null);
+    const [coordinates, setCoordinates] = useState([]);  
+    const [isDrawingActive, setIsDrawingActive] = useState(false);  
+
+    // ✅ Correct import for the renamed function
+    const { startDrawing, updatePolyline, clearMap, enableInfiniteEditing } = useDraw(mapRef);  
+    const { drawCoordinates } = useInputCoordinates(mapRef);  
+
+    const handleDrawingOptionSelect = (maxPoints) => {
+        clearMap();
+        setNumCoordinates(maxPoints);
+        setCoordinates([]);
+        setIsDrawingActive(true);
+        startDrawing(maxPoints, setCoordinates);  
+    };
 
     const handleCoordinateOptionSelect = (option) => {
+        clearMap();
+        setIsDrawingActive(false);
         if (option === 'Two Coordinates') {
             setNumCoordinates(2);
+            setCoordinates([]);  
         } else if (option === 'Three Coordinates') {
             setNumCoordinates(3);
+            setCoordinates([]);  
         } else {
             setNumCoordinates(null);
         }
     };
 
-    // ✅ Calls the new hook
-    const handleCoordinateSubmit = (coordinates) => {
-        drawCoordinates(coordinates);
+    // ✅ Fixed function call here (was makeEndpointsEditable)
+    const handleCoordinateSubmit = (submittedCoordinates) => {
+        setCoordinates(submittedCoordinates);  
+        updatePolyline(submittedCoordinates);  
+        enableInfiniteEditing();  // ✅ Corrected to match useDraw.js
     };
 
     return (
         <div className="relative h-screen w-full">
-            <div className="absolute top-0 left-0 w-full z-50">
+            <div className="absolute top-0 left-0 w-full z-50 bg-white shadow-md">
                 <Navbar 
-                    onStartDrawing={startDrawing}
+                    onStartDrawing={handleDrawingOptionSelect} 
                     onCoordinateOptionSelect={handleCoordinateOptionSelect} 
                 />
             </div>
+
             {numCoordinates && (
                 <CoordinateInput 
                     numCoordinates={numCoordinates} 
+                    initialCoordinates={coordinates} 
                     onSubmit={handleCoordinateSubmit} 
                 />
             )}
+
+            <div 
+                id="map-container" 
+                className="absolute inset-0 h-full w-full z-0"
+            />
+
             <ZoomButtons 
                 handleZoomIn={handleZoomIn} 
                 handleZoomOut={handleZoomOut} 
                 mapReady={mapReady}
-            />
-            <div 
-                id="map-container" 
-                className="absolute inset-0 h-full w-full z-0"
             />
         </div>
     );

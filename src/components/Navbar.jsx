@@ -1,3 +1,4 @@
+// Navbar.jsx (Updated)
 import React from 'react';
 import Dropdown from './Dropdown';
 
@@ -8,7 +9,7 @@ const Navbar = ({ onStartDrawing, onCoordinateOptionSelect }) => {
                 <span className="text-xl font-bold">My Map App</span>
             </div>
 
-            {/* ✅ Dropdown for Drawing Options */}
+            {/* ✅ Trigger Input Form for Drawing */}
             <Dropdown
                 options={['Two Endpoints', 'Three Endpoints']}
                 label="Draw Options"
@@ -18,11 +19,11 @@ const Navbar = ({ onStartDrawing, onCoordinateOptionSelect }) => {
                 }}
             />
 
-            {/* ✅ Dropdown for Coordinate Input Options */}
+            {/* ✅ Coordinate Input Options */}
             <Dropdown
                 options={['Two Coordinates', 'Three Coordinates']}
                 label="Input Coordinates"
-                onSelect={onCoordinateOptionSelect} // ✅ Controlled by the MapComponent
+                onSelect={onCoordinateOptionSelect}
             />
         </nav>
     );
