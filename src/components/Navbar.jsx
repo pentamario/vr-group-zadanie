@@ -1,31 +1,19 @@
 // Navbar.jsx (Updated)
 import React from 'react';
 import Dropdown from './Dropdown';
+import { Axis3d , Earth } from 'lucide-react';
 
 const Navbar = ({ onStartDrawing, onCoordinateOptionSelect }) => {
     return (
-        <nav className="flex justify-between items-center bg-white p-4 px-6 shadow-md">
-            <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold">My Map App</span>
+        <aside className="flex flex-col items-center justify-start bg-white p-2 shadow-md h-screen fixed">
+            <div className="p-3 bg-blue-500 mb-2 rounded-lg">
+                <Earth size={30} stroke="white" />
             </div>
+            <button onClick={() => onStartDrawing(2)} className="p-2 bg-blue-500 hover:bg-blue-400 rounded-lg">
+                <Axis3d stroke="white" />
+            </button>
+        </aside>
 
-            {/* ✅ Trigger Input Form for Drawing */}
-            <Dropdown
-                options={['Two Endpoints', 'Three Endpoints']}
-                label="Draw Options"
-                onSelect={(option) => {
-                    if (option === 'Two Endpoints') onStartDrawing(2);
-                    else if (option === 'Three Endpoints') onStartDrawing(3);
-                }}
-            />
-
-            {/* ✅ Coordinate Input Options */}
-            <Dropdown
-                options={['Two Coordinates', 'Three Coordinates']}
-                label="Input Coordinates"
-                onSelect={onCoordinateOptionSelect}
-            />
-        </nav>
     );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Dropdown from './Dropdown';
 
-const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [] }) => {
+const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [], onStartDrawing, onCoordinateOptionSelect }) => {
     const [coordinates, setCoordinates] = useState([]);
 
     useEffect(() => {
@@ -36,8 +37,43 @@ const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [] }) 
     };
 
     return (
-        <div className="absolute top-20 left-10 bg-white p-4 rounded-lg shadow-lg z-50">
-            <h2 className="text-lg font-bold mb-2">Enter Coordinates</h2>
+        <div className="absolute top-10 right-10 bg-white p-4 rounded-lg shadow-lg z-50">
+            <h2 className="text-lg font-bold mb-2">Draw or Input Coordinates</h2>
+            <div className="flex justify-between items-center py-2">
+                <select
+                    id="draw-options"
+                    className="p-2 border rounded-lg bg-white w-24"
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === '2') onStartDrawing(2);
+                        else if (value === '3') onStartDrawing(3);
+                    }}
+                >
+                    <option value="" disabled>
+                        Select an option
+                    </option>
+                    <option value="2">2 Points</option>
+                    <option value="3">3 Points</option>
+                </select>
+                <select
+                    className="p-2 border rounded-lg bg-white w-24"
+                >
+                    <option value="" disabled>
+                        Select an option
+                    </option>
+                    <option value="Km">Km</option>
+                    <option value="M">M</option>
+                </select>
+                <select
+                    className="p-2 border rounded-lg bg-white w-24"
+                >
+                    <option value="" disabled>
+                        Select an option
+                    </option>
+                    <option value="Km">Rd</option>
+                    <option value="M">Deg</option>
+                </select>
+            </div>
             {coordinates.map((coord, index) => (
                 <div key={index} className="mb-2">
                     <p className="font-semibold">Point {index + 1}</p>
@@ -57,7 +93,6 @@ const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [] }) 
                     />
                 </div>
             ))}
-            {/* ✅ Submit button added for triggering the polyline */}
             <button 
                 onClick={handleSubmit} 
                 className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
