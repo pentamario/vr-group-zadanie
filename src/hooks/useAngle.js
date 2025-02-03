@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const useAngle = (coordinates, unit = 'deg') => {
+    const [angle, setAngle] = useState(null);
+
     // Helper function to calculate azimuth between two points
     const calculateAzimuth = (point1, point2) => {
         const [lon1, lat1] = point1;
@@ -40,14 +42,17 @@ const useAngle = (coordinates, unit = 'deg') => {
             );
 
             // Calculate the angle between the two azimuths
-            let angle = Math.abs(azimuth1 - azimuth2); // Absolute difference
-            if (unit === 'deg' && angle > 180) {
-                angle = 360 - angle; // Normalize to [0, 180°]
+            let calculatedAngle = Math.abs(azimuth1 - azimuth2); // Absolute difference
+            if (unit === 'deg' && calculatedAngle > 180) {
+                calculatedAngle = 360 - calculatedAngle; // Normalize to [0, 180°]
             }
 
-            console.log(`Angle at Point 2: ${angle.toFixed(2)} ${unit}`);
+            setAngle(calculatedAngle.toFixed(2));
+            console.log(`Angle at Point 2: ${calculatedAngle.toFixed(2)} ${unit}`);
         }
     }, [coordinates, unit]);
+
+    return {angle};
 };
 
 export default useAngle;

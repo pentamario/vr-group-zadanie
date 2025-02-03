@@ -5,21 +5,13 @@ import useDraw from '../hooks/useDraw';
 import ZoomButtons from './ZoomButtons';
 import CoordinateInput from './CoordinateInput'; 
 import useInputCoordinates from '../hooks/useInputCoordinates';  
-import useAzimuth from '../hooks/useAzimuth';
-import useDistance from '../hooks/useDistance';
-import useAngle from '../hooks/useAngle';
+
 
 const MapComponent = () => {
     const { mapRef, handleZoomIn, handleZoomOut, mapReady } = useMapControls();
     const [numCoordinates, setNumCoordinates] = useState(null);
     const [coordinates, setCoordinates] = useState([]);  
     const [isDrawingActive, setIsDrawingActive] = useState(false);  
-    const [unit, setUnit] = useState('m');
-    const [azimuthUnit, setAzimuthUnit] = useState('rad'); 
-    const [angleUnit, setAngleUnit] = useState('deg');
-    useAzimuth(coordinates, azimuthUnit);
-    useDistance(coordinates, unit);
-    useAngle(coordinates, angleUnit);
 
     // ✅ Correct import for the renamed function
     const { startDrawing, updatePolyline, clearMap, enableInfiniteEditing } = useDraw(mapRef);  
@@ -86,5 +78,6 @@ const MapComponent = () => {
         </div>
     );
 };
+console.log()
 
 export default MapComponent;

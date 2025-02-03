@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from './Dropdown';
+import useAzimuth from '../hooks/useAzimuth';
+import useDistance from '../hooks/useDistance';
+import useAngle from '../hooks/useAngle';
+import UnitSelector from './UnitSelector';
+import { Plus, Minus, CornerDownLeft } from "lucide-react";
 
 const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [], onStartDrawing, onCoordinateOptionSelect }) => {
     const [coordinates, setCoordinates] = useState([]);
+    const [points, setPoints] = useState("2");
+    const [distanceUnit, setDistanceUnit] = useState('km');
+    const [azimuthUnit, setAzimuthUnit] = useState('deg'); 
+    const [angleUnit, setAngleUnit] = useState('deg');
+    const azimuth = useAzimuth(coordinates, azimuthUnit);
+    const distance = useDistance(coordinates, distanceUnit);
+    const angle = useAngle(coordinates, angleUnit);
 
     useEffect(() => {
         if (initialCoordinates.length > 0) {
@@ -39,41 +51,6 @@ const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [], on
     return (
         <div className="absolute top-10 right-10 bg-white p-4 rounded-lg shadow-lg z-50">
             <h2 className="text-lg font-bold mb-2">Draw or Input Coordinates</h2>
-            <div className="flex justify-between items-center py-2">
-                <select
-                    id="draw-options"
-                    className="p-2 border rounded-lg bg-white w-24"
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === '2') onStartDrawing(2);
-                        else if (value === '3') onStartDrawing(3);
-                    }}
-                >
-                    <option value="" disabled>
-                        Select an option
-                    </option>
-                    <option value="2">2 Points</option>
-                    <option value="3">3 Points</option>
-                </select>
-                <select
-                    className="p-2 border rounded-lg bg-white w-24"
-                >
-                    <option value="" disabled>
-                        Select an option
-                    </option>
-                    <option value="Km">Km</option>
-                    <option value="M">M</option>
-                </select>
-                <select
-                    className="p-2 border rounded-lg bg-white w-24"
-                >
-                    <option value="" disabled>
-                        Select an option
-                    </option>
-                    <option value="Km">Rd</option>
-                    <option value="M">Deg</option>
-                </select>
-            </div>
             {coordinates.map((coord, index) => (
                 <div key={index} className="mb-2">
                     <p className="font-semibold">Point {index + 1}</p>
@@ -93,12 +70,93 @@ const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [], on
                     />
                 </div>
             ))}
-            <button 
-                onClick={handleSubmit} 
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-            >
-                Submit Coordinates
-            </button>
+            <div className="w-full items-center justify-between flex pt-2">
+                <button
+                    onClick={() => {
+                        const newPoints = points === "2" ? "3" : "2";
+                        setPoints(newPoints);
+                        onStartDrawing(parseInt(newPoints, 10));
+                    }}
+                    className="border rounded-full p-2 flex items-center justify-center"
+                    title={points === "2" ? "Switch to 3 Coordinates" : "Switch to 2 Coordinates"}
+                >
+                    {points === "2" ? <Plus  /> : <Minus  />}
+                </button>
+                <button 
+                    onClick={handleSubmit} 
+                    className="border rounded-full p-2 flex items-center justify-center"
+                    title="Submit Coordinates"
+                >
+                    <CornerDownLeft />
+                </button>
+            </div>
+            
+
+            <div className="pt-4 space-y-4">
+                {points === "2" && (
+                    <>
+                        <UnitSelector
+                            label="Distance"
+                            value={distance.totalDistance}
+                            unit={distanceUnit}
+                            onUnitChange={setDistanceUnit}
+                            options={[
+                                {value: "km", label: "Km"},
+                                {value: "m", label: "M"}
+                            ]}
+                        />
+  
+                        <UnitSelector
+                            label="Azimuth"
+                            value={azimuth.azimuth1to2}
+                            unit={azimuthUnit}
+                            onUnitChange={setAzimuthUnit}
+                            options={[
+                                {value: "deg", label: "Deg"},
+                                {value: "rad", label: "Rad"}
+                            ]}
+                        />
+                    </>
+                )}
+
+                {points === "3" && (
+                    <>
+                        <UnitSelector
+                            label="Distance"
+                            value={distance.totalDistance}
+                            unit={distanceUnit}
+                            onUnitChange={setDistanceUnit}
+                            options={[
+                                {value: "km", label: "Km"},
+                                {value: "m", label: "M"}
+                            ]}
+                        />
+
+                        <UnitSelector
+                            label="Azimuth"
+                            value={azimuth.overallAzimuth}
+                            unit={azimuthUnit}
+                            onUnitChange={setAzimuthUnit}
+                            options={[
+                                {value: "deg", label: "Deg"},
+                                {value: "rad", label: "Rad"}
+                            ]}
+                        />
+
+                        <UnitSelector
+                            label="Angle"
+                            value={angle.angle}
+                            unit={angleUnit}
+                            onUnitChange={setAngleUnit}
+                            options={[
+                                {value: "deg", label: "Deg"},
+                                {value: "rad", label: "Rad"}
+                            ]}
+                        />
+                    </>
+                )}
+            </div>
+
         </div>
     );
 };

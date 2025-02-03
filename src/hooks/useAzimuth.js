@@ -1,6 +1,10 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const useAzimuth = (coordinates, unit = 'deg') => {
+    const [azimuth1to2, setAzimuth1to2] = useState(null);
+    const [azimuth2to3, setAzimuth2to3] = useState(null);
+    const [overallAzimuth, setOverallAzimuth] = useState(null);
+
     // Helper function to calculate azimuth between two points
     const calculateAzimuth = (point1, point2) => {
         const [lon1, lat1] = point1;
@@ -23,35 +27,40 @@ const useAzimuth = (coordinates, unit = 'deg') => {
             if (azimuth < 0) azimuth += 360; // Normalize to [0, 360] degrees
         }
 
-        return azimuth.toFixed(2); // Return rounded azimuth
+        return parseFloat(azimuth.toFixed(2)); // Return rounded azimuth
     };
 
     useEffect(() => {
         if (coordinates.length >= 2) {
             // Azimuth between Point 1 → Point 2
-            const azimuth1to2 = calculateAzimuth(
+            const computedAzimuth1to2 = calculateAzimuth(
                 [coordinates[0].longitude, coordinates[0].latitude],
                 [coordinates[1].longitude, coordinates[1].latitude]
             );
-            console.log(`Azimuth Point 1 → Point 2: ${azimuth1to2} ${unit}`);
+            setAzimuth1to2(computedAzimuth1to2);
+            console.log(`Azimuth Point 1 → Point 2: ${computedAzimuth1to2} ${unit}`);
 
             if (coordinates.length === 3) {
                 // Azimuth between Point 2 → Point 3
-                const azimuth2to3 = calculateAzimuth(
+                const computedAzimuth2to3 = calculateAzimuth(
                     [coordinates[1].longitude, coordinates[1].latitude],
                     [coordinates[2].longitude, coordinates[2].latitude]
                 );
-                console.log(`Azimuth Point 2 → Point 3: ${azimuth2to3} ${unit}`);
+                setAzimuth2to3(computedAzimuth2to3);
+                console.log(`Azimuth Point 2 → Point 3: ${computedAzimuth2to3} ${unit}`);
 
                 // Overall Azimuth Point 1 → Point 3
-                const overallAzimuth = calculateAzimuth(
+                const computedOverallAzimuth = calculateAzimuth(
                     [coordinates[0].longitude, coordinates[0].latitude],
                     [coordinates[2].longitude, coordinates[2].latitude]
                 );
-                console.log(`Overall Azimuth Point 1 → Point 3: ${overallAzimuth} ${unit}`);
+                setOverallAzimuth(computedOverallAzimuth);
+                console.log(`Overall Azimuth Point 1 → Point 3: ${computedOverallAzimuth} ${unit}`);
             }
         }
     }, [coordinates, unit]);
+
+    return { azimuth1to2, azimuth2to3, overallAzimuth };
 };
 
 export default useAzimuth;
