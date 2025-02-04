@@ -90,6 +90,23 @@ const CoordinateInput = ({ numCoordinates, onSubmit, initialCoordinates = [], on
                     <CornerDownLeft />
                 </button>
             </div>
+            <button 
+                onClick={() => {
+                    setCoordinates(prev => prev.map(() => ({ latitude: "", longitude: "" }))); // Clear inputs
+                    if (points === "2") {
+                        onStartDrawing(2);
+                    }
+                    else if (points === "3") { 
+                        onStartDrawing(3);
+                    }
+                }}
+                className="border rounded-full p-2 flex items-center justify-center bg-red-500 text-white"
+                title="Clear Fields"
+            >
+                Clear Fields
+            </button>
+
+
             
 
             <div className="pt-4 space-y-4">
