@@ -1,9 +1,40 @@
 # vr-group-zadanie
 
-This is a basic Map Tool, where you can draw or input coordinates and as a result, you will recieve distance between the points, azimuth and an angle. 
-You can swap between 2 and 3 sets of coordinates via the "plus" button or revert back to 2 poins via the "minus" button.
-There is also an option for clearing coordinates. This button a "red trashcan" will remove everything. That means everything drawn on the map, inputed in the input fields and also the resulting data.
-To submit coordinates, you must press the "enter" button under the input fields, if you pressed it when the fields are empty, the application will warn you, also when you input incorrect data, you will recieve a warning.
-The data you recieved consists of distance between points, azimuth and an angle. You can swap between units in the dropdown menu that is avalible next to the value. For distance its kilometers and meters and for angle and azimuth its degrees and radians. Last thing to mention about the data is that you recieve the angle only in the 3 points option.
-The drawing option is very simple, you can click on the map wherever you wish, this action will leave a point where you clicked and input its coordinateds inside the input fields.
-You can also modify these points by dragging and dropping them wherever you want, data will automatically update too.
+# 📍 Map Tool
+
+This is a basic **Map Tool**, where you can **draw** or **input coordinates** to receive the following results:  
+- **Distance** between the points  
+- **Azimuth**  
+- **Angle** (available in the three-point option)  
+
+## 🚀 Features  
+
+### 🔄 Coordinate Input & Switching  
+- Swap between **2 and 3 sets of coordinates** using the ➕ **"plus"** button.  
+- Revert back to **2 points** using the ➖ **"minus"** button.  
+- Clear all coordinates using the 🗑️ **"red trashcan"** button.  
+  - This will remove everything: drawn points on the map, input fields, and resulting data.  
+
+### ✏️ Submitting Coordinates  
+- Press the **"Enter"** button below the input fields to submit coordinates.  
+- If fields are **empty**, the application will warn you.  
+- If incorrect data is entered, you will **receive a warning**.  
+
+### 📊 Data Output  
+The data you receive includes:  
+- **Distance** between points  
+- **Azimuth**  
+- **Angle** (only in the three-point option)  
+
+You can switch between units using the **dropdown menu**:  
+- **Distance:** Kilometers (km) & Meters (m)  
+- **Angle & Azimuth:** Degrees (°) & Radians (rad)  
+
+### 🖊️ Drawing & Interaction  
+- Click anywhere on the map to place a point.  
+- The point's coordinates will be **automatically filled** in the input fields.  
+- Drag and drop points to **modify their positions** – data updates instantly!  
+
+---
+
+Enjoy using **Map Tool**! 🚀🌍  
