@@ -3,7 +3,7 @@ import { ZoomIn, ZoomOut } from 'lucide-react';
 
 const ZoomButtons = ({ handleZoomIn, handleZoomOut, mapReady }) => {
     return (
-        <div className="absolute bottom-10 right-10 flex flex-col space-y-3 z-50">
+        <div className="absolute bottom-10 left-10 flex flex-col space-y-3 z-50">
             <button
                 onClick={handleZoomIn}
                 disabled={!mapReady}

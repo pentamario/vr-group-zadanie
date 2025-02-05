@@ -42,13 +42,7 @@ const useDistance = (coordinates, unit = 'km') => {
 
                 computedDistances.push(segmentDistance);
                 totalDist += segmentDistance;
-
-                console.log(
-                    `Distance between Point ${i + 1} → Point ${i + 2}: ${segmentDistance.toFixed(2)} ${unit}`
-                );
             }
-
-            console.log(`Total Distance: ${totalDist.toFixed(2)} ${unit}`);
 
             setDistances(computedDistances);
             setTotalDistance(totalDist.toFixed(2));

@@ -48,7 +48,6 @@ const useAngle = (coordinates, unit = 'deg') => {
             }
 
             setAngle(calculatedAngle.toFixed(2));
-            console.log(`Angle at Point 2: ${calculatedAngle.toFixed(2)} ${unit}`);
         }
     }, [coordinates, unit]);
 

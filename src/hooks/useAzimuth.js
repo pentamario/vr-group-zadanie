@@ -40,7 +40,6 @@ const useAzimuth = (coordinates, unit = "deg") => {
                 [coordinates[1].longitude, coordinates[1].latitude]
             );
             setAzimuth1to2(computedAzimuth1to2);
-            console.log(`Azimuth Point 1 → Point 2: ${computedAzimuth1to2} ${unit}`);
 
             if (coordinates.length === 3) {
                 // Azimuth between Point 2 → Point 3
@@ -49,7 +48,6 @@ const useAzimuth = (coordinates, unit = "deg") => {
                     [coordinates[2].longitude, coordinates[2].latitude]
                 );
                 setAzimuth2to3(computedAzimuth2to3);
-                console.log(`Azimuth Point 2 → Point 3: ${computedAzimuth2to3} ${unit}`);
 
                 // Overall Azimuth Point 1 → Point 3
                 const computedOverallAzimuth = calculateAzimuth(
@@ -57,7 +55,6 @@ const useAzimuth = (coordinates, unit = "deg") => {
                     [coordinates[2].longitude, coordinates[2].latitude]
                 );
                 setOverallAzimuth(computedOverallAzimuth);
-                console.log(`Overall Azimuth Point 1 → Point 3: ${computedOverallAzimuth} ${unit}`);
             }
         }
     }, [coordinates, unit]);

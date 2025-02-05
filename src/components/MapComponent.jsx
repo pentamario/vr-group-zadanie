@@ -1,5 +1,4 @@
-import React from 'react';
-import Navbar from './Navbar';
+import React, { useEffect } from 'react';
 import useMapControls from '../hooks/useMapControls';
 import useMapManager from '../hooks/useMapManager';
 import ZoomButtons from './ZoomButtons';
@@ -15,15 +14,13 @@ const MapComponent = () => {
         handleCoordinateSubmit
     } = useMapManager(mapRef);
 
+    // 🟢 Automatically trigger onStartDrawing when the component mounts
+    useEffect(() => {
+        handleDrawingOptionSelect(2); // Adjust the value if needed
+    }, []); // Empty dependency array ensures it runs only once
+
     return (
         <div className="relative h-screen">
-            <div className="absolute w-full z-50 bg-white shadow-md">
-                <Navbar 
-                    onStartDrawing={handleDrawingOptionSelect} 
-                    onCoordinateOptionSelect={handleCoordinateOptionSelect} 
-                />
-            </div>
-
             {numCoordinates && (
                 <CoordinateInput 
                     numCoordinates={numCoordinates} 
