@@ -1,50 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './Navbar';
 import useMapControls from '../hooks/useMapControls';
-import useDraw from '../hooks/useDraw';
+import useMapManager from '../hooks/useMapManager';
 import ZoomButtons from './ZoomButtons';
-import CoordinateInput from './CoordinateInput'; 
-import useInputCoordinates from '../hooks/useInputCoordinates';  
-
+import CoordinateInput from './CoordinateInput';
 
 const MapComponent = () => {
     const { mapRef, handleZoomIn, handleZoomOut, mapReady } = useMapControls();
-    const [numCoordinates, setNumCoordinates] = useState(null);
-    const [coordinates, setCoordinates] = useState([]);  
-    const [isDrawingActive, setIsDrawingActive] = useState(false);  
-
-    // ✅ Correct import for the renamed function
-    const { startDrawing, updatePolyline, clearMap, enableInfiniteEditing } = useDraw(mapRef);  
-    const { drawCoordinates } = useInputCoordinates(mapRef);  
-
-    const handleDrawingOptionSelect = (maxPoints) => {
-        clearMap();
-        setNumCoordinates(maxPoints);
-        setCoordinates([]);
-        setIsDrawingActive(true);
-        startDrawing(maxPoints, setCoordinates);  
-    };
-
-    const handleCoordinateOptionSelect = (option) => {
-        clearMap();
-        setIsDrawingActive(false);
-        if (option === 'Two Coordinates') {
-            setNumCoordinates(2);
-            setCoordinates([]);  
-        } else if (option === 'Three Coordinates') {
-            setNumCoordinates(3);
-            setCoordinates([]);  
-        } else {
-            setNumCoordinates(null);
-        }
-    };
-
-    // ✅ Fixed function call here (was makeEndpointsEditable)
-    const handleCoordinateSubmit = (submittedCoordinates) => {
-        setCoordinates(submittedCoordinates);  
-        updatePolyline(submittedCoordinates);  
-        enableInfiniteEditing();  // ✅ Corrected to match useDraw.js
-    };
+    const {
+        numCoordinates,
+        coordinates,
+        handleDrawingOptionSelect,
+        handleCoordinateOptionSelect,
+        handleCoordinateSubmit
+    } = useMapManager(mapRef);
 
     return (
         <div className="relative h-screen">
@@ -78,6 +47,5 @@ const MapComponent = () => {
         </div>
     );
 };
-console.log()
 
 export default MapComponent;

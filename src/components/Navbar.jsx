@@ -1,6 +1,5 @@
 // Navbar.jsx (Updated)
 import React from 'react';
-import Dropdown from './Dropdown';
 import { Axis3d , Earth } from 'lucide-react';
 
 const Navbar = ({ onStartDrawing, onCoordinateOptionSelect }) => {

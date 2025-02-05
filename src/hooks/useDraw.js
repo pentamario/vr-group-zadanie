@@ -116,12 +116,25 @@ const useDraw = (mapRef) => {
                 .filter(feature => feature.getGeometry().getType() === 'Point')
                 .map(feature => {
                     const [lon, lat] = toLonLat(feature.getGeometry().getCoordinates());
-                    return { latitude: lat.toFixed(6), longitude: lon.toFixed(6) };
+                    return { latitude: lat.toFixed(6), longitude: lon.toFixed(6), index: feature.get('index') };
                 });
 
             if (setCoordinatesRef.current) {
                 setCoordinatesRef.current(updatedCoords);
             }
+            // ✅ Sort by the original index to maintain order
+            updatedCoords.sort((a, b) => a.index - b.index);
+
+            // ✅ Remove index before updating state
+            const cleanedCoords = updatedCoords.map(({ latitude, longitude }) => ({
+                latitude,
+                longitude,
+            }));
+
+            if (setCoordinatesRef.current) {
+                setCoordinatesRef.current(cleanedCoords);
+            }
+
             updatePolyline(updatedCoords);
         });
 

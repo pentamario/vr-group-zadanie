@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-const useAzimuth = (coordinates, unit = 'deg') => {
+const useAzimuth = (coordinates, unit = "deg") => {
     const [azimuth1to2, setAzimuth1to2] = useState(null);
     const [azimuth2to3, setAzimuth2to3] = useState(null);
     const [overallAzimuth, setOverallAzimuth] = useState(null);
@@ -22,9 +22,11 @@ const useAzimuth = (coordinates, unit = 'deg') => {
 
         let azimuth = Math.atan2(x, y); // Azimuth in radians
 
-        if (unit === 'deg') {
+        if (unit === "deg") {
             azimuth = azimuth * (180 / Math.PI); // Convert to degrees
             if (azimuth < 0) azimuth += 360; // Normalize to [0, 360] degrees
+        } else if (unit === "rad") {
+            if (azimuth < 0) azimuth += 2 * Math.PI; // Normalize to [0, 2π] radians
         }
 
         return parseFloat(azimuth.toFixed(2)); // Return rounded azimuth
